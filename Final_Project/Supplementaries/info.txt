@@ -1,0 +1,1 @@
+This folder is used for holding given datasets. Move files to \data as needed.
