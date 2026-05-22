@@ -8,16 +8,16 @@ class SustainabilityGame:
         "CretinHall": 5,
         "LorasHall": 5,
         "FlynnHall": 5,
-        "Terrace": 5,
-        "KochCommons": 4,
-        "Anderson": 4,
-        "StudentCenterAnnex": 4
+        "Dowling": 5,
+        "Ireland": 5,
+        "FreyHall": 5,
+        "Anderson": 5,
     }
 
     MEDIUM_PRIORITY_SITES = {
         "Library": 3,
         "Brady": 3,
-        "JohnRoach": 3,
+        "Murray": 3,
         "Schoenecker": 3,
         "McNeely": 3
     }
