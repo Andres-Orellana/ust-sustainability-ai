@@ -1,5 +1,7 @@
 from models.campus_graph import CampusGraph
 from models.sustainability_game import SustainabilityGame
+from models.search_problem import SearchProblem
+from models.AStar import AStar
 
 def main():
     print("Loading campus graph...\n")
@@ -28,10 +30,31 @@ def main():
 
     game.start_game(start)
 
+    navigator = AStar(game)
+
     while True:
+        navigator = AStar(game)
+        # A* stuff
+        suggestion = navigator.get_best_move()
+        route = navigator.get_best_path()
+        target = navigator.get_target()
 
         game.display_status()
 
+        print(
+            f"\nTarget Building: "
+            f"{target}"
+        )
+
+        print(
+            f"A* Suggested Move: "
+            f"{suggestion}"
+        )
+
+        print(
+            f"A* Route: "
+            f"{route}"
+        )
         if game.game_complete():
 
             print(
@@ -41,7 +64,8 @@ def main():
             break
 
         move = input(
-            "\nMove to building (or quit): ").strip()
+            "\nMove to building (or quit): "
+        ).strip()
 
         if move.lower() == "quit":
             break

@@ -448,12 +448,32 @@ class SustainabilityGame:
         print(
             f"\nCollected Sites: "
             f"{len(self.collected_locations)}"
+            f"/{len(self.collection_sites)}"
         )
 
         print(
             f"Remaining Sites: "
             f"{len(self.get_remaining_sites())}"
         )
+
+        print("\nSustainability Buildings:")
+
+        for building in sorted(self.collection_sites.keys()):
+
+            reward = self.get_collection_reward(
+                building
+            )
+
+            if building in self.collected_locations:
+                status = "COLLECTED"
+            else:
+                status = "remaining"
+
+            print(
+                f"- {building}: "
+                f"{reward} points "
+                f"({status})"
+            )
 
         print("\nNeighboring Buildings:")
 
