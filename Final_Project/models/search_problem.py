@@ -32,10 +32,7 @@ class SearchProblem(Problem):
         for neighbor, distance in neighbors:
 
             if neighbor == action:
-                return cost_so_far + (
-                    distance *
-                    self.game.DISTANCE_MULTIPLIER
-                )
+                return cost_so_far + (distance * self.game.DISTANCE_MULTIPLIER)
 
         return float("inf")
 

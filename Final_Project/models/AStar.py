@@ -9,11 +9,8 @@ class AStar:
 
         self.game = game
 
-        # NEW
-        self.distance_matrix = pd.read_csv(
-            "data/ust_distance_matrix-1.csv",
-            index_col=0
-        )
+        # Euclidean distance matrix
+        self.distance_matrix = pd.read_csv("data/ust_distance_matrix-1.csv", index_col=0)
 
     def choose_best_target(self):
 
@@ -31,22 +28,9 @@ class AStar:
 
             reward = self.game.get_collection_reward(site)
 
-            estimated_distance = (
-                self.estimate_distance(
-                    current,
-                    site
-                )
-            )
+            estimated_distance = (self.estimate_distance(current, site))
 
-            value = (
-                reward
-                -
-                (
-                    estimated_distance
-                    *
-                    self.game.DISTANCE_MULTIPLIER
-                )
-            )
+            value = (reward-(estimated_distance * self.game.DISTANCE_MULTIPLIER))
 
             if value > best_value:
                 best_value = value
@@ -54,17 +38,10 @@ class AStar:
 
         return best_target
 
-    # CHANGED
-    def estimate_distance(
-        self,
-        start,
-        goal
-    ):
+    # Euclidean distance for h()
+    def estimate_distance(self,start,goal):
 
-        return self.distance_matrix.loc[
-            start,
-            goal
-        ]
+        return self.distance_matrix.loc[start,goal]
 
     def get_goal_node(self):
 
@@ -73,17 +50,9 @@ class AStar:
         if target is None:
             return None
 
-        problem = SearchProblem(
-            self.game.graph,
-            self.game.current_location,
-            target,
-            self.game
-        )
+        problem = SearchProblem(self.game.graph,self.game.current_location,target,self.game)
 
-        # NEW
-        problem.distance_matrix = (
-            self.distance_matrix
-        )
+        problem.distance_matrix = (self.distance_matrix)
 
         return astar_search(problem)
 
