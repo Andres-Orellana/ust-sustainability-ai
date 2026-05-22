@@ -43,14 +43,5 @@ class SearchProblem(Problem):
 
         current = node.state
 
-        neighbors = self.graph.get_neighbors(current)
-
-        for neighbor, distance in neighbors:
-
-            if neighbor == self.goal:
-                return (
-                    distance *
-                    self.game.DISTANCE_MULTIPLIER
-                )
-
-        return 0
+        return self.distance_matrix.loc[current,self.goal] * self.game.DISTANCE_MULTIPLIER
+    

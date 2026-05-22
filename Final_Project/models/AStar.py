@@ -1,11 +1,19 @@
 from models.search import astar_search
 from models.search_problem import SearchProblem
+import pandas as pd
 
 
 class AStar:
 
     def __init__(self, game):
+
         self.game = game
+
+        # NEW
+        self.distance_matrix = pd.read_csv(
+            "data/ust_distance_matrix-1.csv",
+            index_col=0
+        )
 
     def choose_best_target(self):
 
@@ -23,11 +31,21 @@ class AStar:
 
             reward = self.game.get_collection_reward(site)
 
-            estimated_distance = self.estimate_distance(current, site)
+            estimated_distance = (
+                self.estimate_distance(
+                    current,
+                    site
+                )
+            )
 
-            value = reward - (
-                estimated_distance *
-                self.game.DISTANCE_MULTIPLIER
+            value = (
+                reward
+                -
+                (
+                    estimated_distance
+                    *
+                    self.game.DISTANCE_MULTIPLIER
+                )
             )
 
             if value > best_value:
@@ -36,36 +54,17 @@ class AStar:
 
         return best_target
 
-    def estimate_distance(self, start, goal):
+    # CHANGED
+    def estimate_distance(
+        self,
+        start,
+        goal
+    ):
 
-        frontier = [(0, start)]
-        visited = set()
-
-        while len(frontier) > 0:
-
-            cost, current = frontier.pop(0)
-
-            if current == goal:
-                return cost
-
-            if current in visited:
-                continue
-
-            visited.add(current)
-
-            neighbors = self.game.graph.get_neighbors(current)
-
-            for neighbor, distance in neighbors:
-
-                if neighbor not in visited:
-                    frontier.append(
-                        (
-                            cost + distance,
-                            neighbor
-                        )
-                    )
-
-        return float("inf")
+        return self.distance_matrix.loc[
+            start,
+            goal
+        ]
 
     def get_goal_node(self):
 
@@ -74,7 +73,17 @@ class AStar:
         if target is None:
             return None
 
-        problem = SearchProblem(self.game.graph, self.game.current_location, target, self.game)
+        problem = SearchProblem(
+            self.game.graph,
+            self.game.current_location,
+            target,
+            self.game
+        )
+
+        # NEW
+        problem.distance_matrix = (
+            self.distance_matrix
+        )
 
         return astar_search(problem)
 
